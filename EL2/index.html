@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard UI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">ALPHA Q</div>
+        <div class="nav-links">
+            <a href="#">home</a>
+            <a href="#">data</a>
+            <a href="#">graphs</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="dashboard">
+        <!-- Card 1 -->
+        <div class="card energy-card">
+            <h3>ENERGY</h3>
+            <p class="values">values</p>
+            <div class="progress-bar">
+                <div class="progress" style="width: 60%;">
+                    <span class="progress-text">60%</span>
+                </div>
+            </div>
+            <p class="subtitle">ENERGY</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card efficiency-card">
+            <h3>EFFICIENCY</h3>
+            <p class="values">values</p>
+            <div class="circle-chart">
+                <p class="before-after">BEFORE: 50%</p>
+                <p class="before-after">AFTER: 58%</p>
+                <canvas id="efficiencyChart" width="80" height="80"></canvas>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card space-card">
+            <h3>IN SPACE</h3>
+            <canvas id="spaceChart" width="150" height="100"></canvas>
+        </div>
+    </div>
+
+    <!-- Line Chart -->
+    <div class="line-chart">
+        <canvas id="lineChart"></canvas>
+    </div>
+    
+
+    <script src="script.js"></script>
+</body>
+</html>
