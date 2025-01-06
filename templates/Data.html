@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Table</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Refresh the page every 1 second -->
+    <meta http-equiv="refresh" content="1">
+</head>
+<body>
+    <nav>
+        <div class="logo">Sensor Dashboard</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/data_page">Data</a>
+            <a href="/graphs">Graphs</a>
+        </div>
+    </nav>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Temperature Front (°C)</th>
+                <th>Temperature Back (°C)</th>
+                <th>Current TEG (A)</th>
+                <th>Current Solar (A)</th>
+                <th>Voltage Solar (V)</th>
+                <th>Voltage TEG (V)</th>
+                <th>Power Solar (W)</th>
+                <th>Power TEG (W)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in data %}
+            <tr>
+                <td>{{ entry.temperature_front }}</td>
+                <td>{{ entry.temperature_back }}</td>
+                <td>{{ entry.current_teg }}</td>
+                <td>{{ entry.current_solar }}</td>
+                <td>{{ entry.voltage_solar }}</td>
+                <td>{{ entry.voltage_teg }}</td>
+                <td>{{ entry.power_solar }}</td>
+                <td>{{ entry.power_teg }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
