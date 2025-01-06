@@ -46,6 +46,24 @@ def data_page():
     ]
     return render_template('Data.html', data=data_list)
 
+@app.route('/data_page_data')
+def data_page_data():
+    data = SensorData.query.order_by(SensorData.timestamp.desc()).limit(50).all()
+    data_list = [
+        {
+            'temperature_front': entry.temperature_front,
+            'temperature_back': entry.temperature_back,
+            'current_teg': entry.current_teg,
+            'current_solar': entry.current_solar,
+            'voltage_solar': entry.voltage_solar,
+            'voltage_teg': entry.voltage_teg,
+            'power_solar': entry.power_solar,
+            'power_teg': entry.power_teg
+        }
+        for entry in data
+    ]
+    return jsonify(data_list)
+
 @app.route('/')
 def index():
     temperature_front = round(random.uniform(20, 30), 2)
