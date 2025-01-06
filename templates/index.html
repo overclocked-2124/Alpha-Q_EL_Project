@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <title>Sensor Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
-
 </head>
 <body>
     <nav>
@@ -44,12 +42,5 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-
-    <script>
-        // Refresh the home page every 1 second
-        setTimeout(() => {
-            location.reload();
-        }, 1000);
-    </script>
 </body>
 </html>

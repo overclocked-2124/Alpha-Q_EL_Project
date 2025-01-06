@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     beginAtZero: true,
                     title: { display: true, text: 'Values' }
                 }
+            },
+            animation: {
+                duration: 0 // Disable animation to make updates smoother
             }
         }
     });
