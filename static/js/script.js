@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 const currentTime = new Date(); // Use Date object for time-based charts
 
+                // Append new data points
                 lineChart.data.labels.push(currentTime);
                 lineChart.data.datasets[0].data.push(data.temperature_front);
                 lineChart.data.datasets[1].data.push(data.temperature_back);
@@ -54,13 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 lineChart.data.datasets[6].data.push(data.power_solar);
                 lineChart.data.datasets[7].data.push(data.power_teg);
 
-                // Limit the number of data points to 50
-                if (lineChart.data.labels.length > 50) {
-                    lineChart.data.labels.shift();
-                    lineChart.data.datasets.forEach(dataset => dataset.data.shift());
+                // Optional: Limit the number of data points to avoid performance issues
+                if (lineChart.data.labels.length > 100) { // Change 100 to any number you prefer
+                    lineChart.data.labels.shift(); // Remove the oldest label
+                    lineChart.data.datasets.forEach(dataset => dataset.data.shift()); // Remove the oldest data point
                 }
 
-                lineChart.update();
+                lineChart.update(); // Update the chart with new data
             })
             .catch(error => console.error('Error fetching data:', error));
     }
