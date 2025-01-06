@@ -15,6 +15,7 @@ with app.app_context():
 def data():
     latest_data = SensorData.query.order_by(SensorData.timestamp.desc()).first()
     if latest_data:
+        print("Latest data:", latest_data)  # Debugging
         return jsonify({
             'temperature_front': latest_data.temperature_front,
             'temperature_back': latest_data.temperature_back,

@@ -35,13 +35,19 @@
         </div>
     </div>
 
-    <!-- Line Chart -->
+    <!-- Line Chart (Static) -->
     <div class="line-chart">
         <canvas id="lineChart"></canvas>
     </div>
 
+    <!-- Include Chart.js and adapter -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
-    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+
+    <!-- Include the static chart script -->
+    <script src="{{ url_for('static', filename='js/home-chart-static.js') }}"></script>
+
+    <!-- Include the data update script -->
+    <script src="{{ url_for('static', filename='js/home-data.js') }}"></script>
 </body>
 </html>

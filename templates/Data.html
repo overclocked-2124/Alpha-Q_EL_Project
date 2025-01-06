@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Data Table</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Refresh the page every 1 second -->
+    <meta http-equiv="refresh" content="1">
 </head>
 <body>
     <nav>
@@ -11,11 +13,11 @@
         <div class="nav-links">
             <a href="/">Home</a>
             <a href="/data_page">Data</a>
-            <a href="graphs">Graphs</a>
+            <a href="/graphs">Graphs</a>
         </div>
     </nav>
 
-    <table id="data-table">
+    <table>
         <thead>
             <tr>
                 <th>Temperature Front (°C)</th>
@@ -29,43 +31,19 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Data rows will be dynamically inserted here -->
+            {% for entry in data %}
+            <tr>
+                <td>{{ entry.temperature_front }}</td>
+                <td>{{ entry.temperature_back }}</td>
+                <td>{{ entry.current_teg }}</td>
+                <td>{{ entry.current_solar }}</td>
+                <td>{{ entry.voltage_solar }}</td>
+                <td>{{ entry.voltage_teg }}</td>
+                <td>{{ entry.power_solar }}</td>
+                <td>{{ entry.power_teg }}</td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
-
-    <script>
-        // Function to fetch and update the table data
-        function updateTable() {
-            fetch('/data_page_data') // New endpoint to fetch data as JSON
-                .then(response => response.json())
-                .then(data => {
-                    const tbody = document.querySelector('#data-table tbody');
-                    tbody.innerHTML = ''; // Clear existing rows
-
-                    // Add new rows with the latest data
-                    data.forEach(entry => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${entry.temperature_front}</td>
-                            <td>${entry.temperature_back}</td>
-                            <td>${entry.current_teg}</td>
-                            <td>${entry.current_solar}</td>
-                            <td>${entry.voltage_solar}</td>
-                            <td>${entry.voltage_teg}</td>
-                            <td>${entry.power_solar}</td>
-                            <td>${entry.power_teg}</td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                })
-                .catch(error => console.error('Error fetching data:', error));
-        }
-
-        // Fetch and update the table every second
-        setInterval(updateTable, 1000);
-
-        // Initial fetch to populate the table when the page loads
-        updateTable();
-    </script>
 </body>
 </html>
