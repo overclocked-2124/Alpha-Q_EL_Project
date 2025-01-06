@@ -2,40 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sensor Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 </head>
 <body>
     <nav>
         <div class="logo">Sensor Dashboard</div>
         <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Data</a>
+            <a href="/">Home</a>
+            <a href="/data_page">Data</a>
             <a href="#">Graphs</a>
         </div>
     </nav>
 
     <div class="dashboard">
+        <!-- TEG Data Card -->
         <div class="card">
-            <h3>Voltage</h3>
-            <p class="values" id="voltage">0 V</p>
+            <h3>TEG Data</h3>
+            <p><strong>Temperature Front:</strong> <span id="temperature-front">{{ temperature_front }} °C</span></p>
+            <p><strong>Temperature Back:</strong> <span id="temperature-back">{{ temperature_back }} °C</span></p>
+            <p><strong>Current TEG:</strong> <span id="current-teg">{{ current_teg }} A</span></p>
+            <p><strong>Voltage TEG:</strong> <span id="voltage-teg">{{ voltage_teg }} V</span></p>
+            <p><strong>Power TEG:</strong> <span id="power-teg">{{ power_teg }} W</span></p>
         </div>
+
+        <!-- Solar Panel Data Card -->
         <div class="card">
-            <h3>Current</h3>
-            <p class="values" id="current">0 A</p>
-        </div>
-        <div class="card">
-            <h3>Temperature</h3>
-            <p class="values" id="temperature">0 °C</p>
+            <h3>Solar Panel Data</h3>
+            <p><strong>Current Solar:</strong> <span id="current-solar">{{ current_solar }} A</span></p>
+            <p><strong>Voltage Solar:</strong> <span id="voltage-solar">{{ voltage_solar }} V</span></p>
+            <p><strong>Power Solar:</strong> <span id="power-solar">{{ power_solar }} W</span></p>
         </div>
     </div>
 
+    <!-- Line Chart -->
     <div class="line-chart">
         <canvas id="lineChart"></canvas>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <script>
+        // Refresh the home page every 1 second
+        setTimeout(() => {
+            location.reload();
+        }, 1000);
+    </script>
 </body>
 </html>

@@ -1,80 +1,114 @@
-// Initialize arrays to store sensor data for graphing
-let voltageData = [];
-let currentData = [];
-let temperatureData = [];
+document.addEventListener('DOMContentLoaded', () => {
+    // Select the canvas element
+    const ctx = document.getElementById('lineChart').getContext('2d');
 
-// Get references to the HTML elements
-const voltageElement = document.getElementById('voltage');
-const currentElement = document.getElementById('current');
-const temperatureElement = document.getElementById('temperature');
-
-// Set up the Chart.js line chart
-const ctx = document.getElementById('lineChart').getContext('2d');
-const lineChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: [], // Time labels will be added dynamically
-        datasets: [
-            {
-                label: 'Voltage (V)',
-                data: voltageData,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                fill: false,
-            },
-            {
-                label: 'Current (A)',
-                data: currentData,
-                borderColor: 'rgba(255, 99, 132, 1)',
-                fill: false,
-            },
-            {
-                label: 'Temperature (°C)',
-                data: temperatureData,
-                borderColor: 'rgba(54, 162, 235, 1)',
-                fill: false,
-            }
-        ]
-    },
-    options: {
-        scales: {
-            x: {
-                type: 'linear',
-                position: 'bottom'
+    // Create the line chart
+    const lineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [], // Time labels
+            datasets: [
+                {
+                    label: 'Temperature Front (°C)',
+                    data: [],
+                    borderColor: 'red',
+                    fill: false,
+                },
+                {
+                    label: 'Temperature Back (°C)',
+                    data: [],
+                    borderColor: 'orange',
+                    fill: false,
+                },
+                {
+                    label: 'Current TEG (A)',
+                    data: [],
+                    borderColor: 'blue',
+                    fill: false,
+                },
+                {
+                    label: 'Current Solar (A)',
+                    data: [],
+                    borderColor: 'green',
+                    fill: false,
+                },
+                {
+                    label: 'Voltage Solar (V)',
+                    data: [],
+                    borderColor: 'purple',
+                    fill: false,
+                },
+                {
+                    label: 'Voltage TEG (V)',
+                    data: [],
+                    borderColor: 'pink',
+                    fill: false,
+                },
+                {
+                    label: 'Power Solar (W)',
+                    data: [],
+                    borderColor: 'yellow',
+                    fill: false,
+                },
+                {
+                    label: 'Power TEG (W)',
+                    data: [],
+                    borderColor: 'brown',
+                    fill: false,
+                },
+            ]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'second'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Time'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Values'
+                    }
+                }
             }
         }
+    });
+
+    // Fetch data and update chart
+    function fetchData() {
+        fetch('/data')
+            .then(response => response.json())
+            .then(data => {
+                const currentTime = new Date().toLocaleTimeString();
+
+                // Update labels and datasets
+                lineChart.data.labels.push(currentTime);
+                lineChart.data.datasets[0].data.push(data.temperature_front);
+                lineChart.data.datasets[1].data.push(data.temperature_back);
+                lineChart.data.datasets[2].data.push(data.current_teg);
+                lineChart.data.datasets[3].data.push(data.current_solar);
+                lineChart.data.datasets[4].data.push(data.voltage_solar);
+                lineChart.data.datasets[5].data.push(data.voltage_teg);
+                lineChart.data.datasets[6].data.push(data.power_solar);
+                lineChart.data.datasets[7].data.push(data.power_teg);
+
+                // Limit data points to 50
+                if (lineChart.data.labels.length > 50) {
+                    lineChart.data.labels.shift();
+                    lineChart.data.datasets.forEach(dataset => dataset.data.shift());
+                }
+
+                lineChart.update();
+            })
+            .catch(error => console.error('Error fetching data:', error));
     }
+
+    // Fetch data every second
+    setInterval(fetchData, 1000);
 });
-
-// Function to fetch data from the Flask backend
-function fetchData() {
-    fetch('/data')
-        .then(response => response.json())
-        .then(data => {
-            // Update the HTML elements with the latest data
-            voltageElement.textContent = data.voltage.toFixed(2) + ' V';
-            currentElement.textContent = data.current.toFixed(2) + ' A';
-            temperatureElement.textContent = data.temperature.toFixed(2) + ' °C';
-
-            // Update the chart data
-            const currentTime = new Date().toLocaleTimeString();
-            lineChart.data.labels.push(currentTime);
-            voltageData.push(data.voltage);
-            currentData.push(data.current);
-            temperatureData.push(data.temperature);
-
-            // Limit the number of data points displayed
-            if (voltageData.length > 20) {
-                voltageData.shift();
-                currentData.shift();
-                temperatureData.shift();
-                lineChart.data.labels.shift();
-            }
-
-            // Update the chart
-            lineChart.update();
-        })
-        .catch(error => console.error('Error fetching data:', error));
-}
-
-// Fetch data every second
-setInterval(fetchData, 1000);
