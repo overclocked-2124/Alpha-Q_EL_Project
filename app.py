@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify ,request
 from flask_sqlalchemy import SQLAlchemy
 from models import db, SensorData
 import random
@@ -97,6 +97,27 @@ def index():
                            voltage_teg=voltage_teg,
                            power_solar=power_solar,
                            power_teg=power_teg)
+@app.route('/graphs')
+def graphs():
+    return render_template('graphs.html')
+
+@app.route('/graph_data')
+def graph_data():
+    data = SensorData.query.order_by(SensorData.timestamp).all()
+    data_list = [
+        {
+            'temperature_front': entry.temperature_front,
+            'temperature_back': entry.temperature_back,
+            'current_teg': entry.current_teg,
+            'current_solar': entry.current_solar,
+            'voltage_solar': entry.voltage_solar,
+            'voltage_teg': entry.voltage_teg,
+            'power_solar': entry.power_solar,
+            'power_teg': entry.power_teg
+        }
+        for entry in data
+    ]
+    return jsonify(data_list)
 
 if __name__ == '__main__':
     app.run(debug=True)

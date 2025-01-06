@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Graphs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="logo">Sensor Dashboard</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/data_page">Data</a>
+            <a href="/graphs">Graphs</a>
+        </div>
+    </nav>
+
+    <div>
+        <label for="x-axis">X-axis:</label>
+        <select id="x-axis">
+            <option value="temperature_front">Temperature Front (°C)</option>
+            <option value="temperature_back">Temperature Back (°C)</option>
+            <option value="current_teg">Current TEG (A)</option>
+            <option value="current_solar">Current Solar (A)</option>
+            <option value="voltage_solar">Voltage Solar (V)</option>
+            <option value="voltage_teg">Voltage TEG (V)</option>
+            <option value="power_solar">Power Solar (W)</option>
+            <option value="power_teg">Power TEG (W)</option>
+        </select>
+
+        <label for="y-axis">Y-axis:</label>
+        <select id="y-axis">
+            <option value="temperature_front">Temperature Front (°C)</option>
+            <option value="temperature_back">Temperature Back (°C)</option>
+            <option value="current_teg">Current TEG (A)</option>
+            <option value="current_solar">Current Solar (A)</option>
+            <option value="voltage_solar">Voltage Solar (V)</option>
+            <option value="voltage_teg">Voltage TEG (V)</option>
+            <option value="power_solar">Power Solar (W)</option>
+            <option value="power_teg">Power TEG (W)</option>
+        </select>
+    </div>
+
+    <div class="line-chart">
+        <canvas id="scatterChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/graphs.js') }}"></script>
+</body>
+</html>

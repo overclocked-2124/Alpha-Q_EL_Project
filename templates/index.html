@@ -11,7 +11,7 @@
         <div class="nav-links">
             <a href="/">Home</a>
             <a href="/data_page">Data</a>
-            <a href="#">Graphs</a>
+            <a href="/graphs">Graphs</a>
         </div>
     </nav>
 
@@ -39,8 +39,9 @@
     <div class="line-chart">
         <canvas id="lineChart"></canvas>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
 </body>
 </html>

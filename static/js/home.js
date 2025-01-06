@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             },
             animation: {
-                duration: 0 // Disable animation to make updates smoother
+                duration: 0 // Disable animation for smoother updates
             }
         }
     });
