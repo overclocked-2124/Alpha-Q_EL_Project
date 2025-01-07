@@ -16,53 +16,20 @@ def data():
     latest_data = SensorData.query.order_by(SensorData.timestamp.desc()).first()
     if latest_data:
         print("Latest data:", latest_data)  # Debugging
-        return jsonify({
-            'temperature_front': latest_data.temperature_front,
-            'temperature_back': latest_data.temperature_back,
-            'current_teg': latest_data.current_teg,
-            'current_solar': latest_data.current_solar,
-            'voltage_solar': latest_data.voltage_solar,
-            'voltage_teg': latest_data.voltage_teg,
-            'power_solar': latest_data.power_solar,
-            'power_teg': latest_data.power_teg
-        })
+        return jsonify(latest_data.to_dict())
     else:
         return jsonify({})
 
 @app.route('/data_page')
 def data_page():
     data = SensorData.query.order_by(SensorData.timestamp.desc()).limit(50).all()
-    data_list = [
-        {
-            'temperature_front': entry.temperature_front,
-            'temperature_back': entry.temperature_back,
-            'current_teg': entry.current_teg,
-            'current_solar': entry.current_solar,
-            'voltage_solar': entry.voltage_solar,
-            'voltage_teg': entry.voltage_teg,
-            'power_solar': entry.power_solar,
-            'power_teg': entry.power_teg
-        }
-        for entry in data
-    ]
+    data_list = [entry.to_dict() for entry in data]
     return render_template('Data.html', data=data_list)
 
 @app.route('/data_page_data')
 def data_page_data():
     data = SensorData.query.order_by(SensorData.timestamp.desc()).limit(50).all()
-    data_list = [
-        {
-            'temperature_front': entry.temperature_front,
-            'temperature_back': entry.temperature_back,
-            'current_teg': entry.current_teg,
-            'current_solar': entry.current_solar,
-            'voltage_solar': entry.voltage_solar,
-            'voltage_teg': entry.voltage_teg,
-            'power_solar': entry.power_solar,
-            'power_teg': entry.power_teg
-        }
-        for entry in data
-    ]
+    data_list = [entry.to_dict() for entry in data]
     return jsonify(data_list)
 
 @app.route('/')
@@ -98,6 +65,7 @@ def index():
                            voltage_teg=voltage_teg,
                            power_solar=power_solar,
                            power_teg=power_teg)
+
 @app.route('/graphs')
 def graphs():
     return render_template('graphs.html')
@@ -105,19 +73,7 @@ def graphs():
 @app.route('/graph_data')
 def graph_data():
     data = SensorData.query.order_by(SensorData.timestamp).all()
-    data_list = [
-        {
-            'temperature_front': entry.temperature_front,
-            'temperature_back': entry.temperature_back,
-            'current_teg': entry.current_teg,
-            'current_solar': entry.current_solar,
-            'voltage_solar': entry.voltage_solar,
-            'voltage_teg': entry.voltage_teg,
-            'power_solar': entry.power_solar,
-            'power_teg': entry.power_teg
-        }
-        for entry in data
-    ]
+    data_list = [entry.to_dict() for entry in data]
     return jsonify(data_list)
 
 if __name__ == '__main__':
