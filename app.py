@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify ,request
+from flask import Flask, render_template, jsonify 
 from flask_sqlalchemy import SQLAlchemy
 from models import db, SensorData
 import random
