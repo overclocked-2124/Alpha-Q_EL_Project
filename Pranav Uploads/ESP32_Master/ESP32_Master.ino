@@ -74,10 +74,6 @@ void loop() {
     json += "\"temperature1\": " + String(temp1) + ",";
     json += "\"temperature2\": " + String(temp2) + ",";
     json += "\"temperature3\": " + String(temp3) + ",";
-    json += "\"ldr1\": " + String(ldr1) + ",";
-    json += "\"ldr2\": " + String(ldr2) + ",";
-    json += "\"ldr3\": " + String(ldr3);
-    json += "}";
     if (enabled==1){
   
       // Read INA219 sensor data
@@ -96,6 +92,11 @@ void loop() {
       json += "\"current2\": " + String(current2) + ",";
       json += "\"power2\": " + String(power2) + ",";
     }
+    json += "\"ldr1\": " + String(ldr1) + ",";
+    json += "\"ldr2\": " + String(ldr2) + ",";
+    json += "\"ldr3\": " + String(ldr3);
+    json += "}";
+    
 
     // Set the Content-Type header
     http.addHeader("Content-Type", "application/json");
