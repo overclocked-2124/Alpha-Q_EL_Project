@@ -1,7 +1,7 @@
-from flask import Flask, render_template, jsonify 
+from flask import Flask, render_template, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from models import db, SensorData
-import random
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sensor_data.db'
@@ -11,93 +11,68 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+@app.route('/receive_data', methods=['POST'])
+def receive_data():
+    data = request.json
+    new_data = SensorData(
+        temperature_front=data['temperature_front'],
+        temperature_back=data['temperature_back'],
+        current_teg=data['current_teg'],
+        current_solar=data['current_solar'],
+        voltage_solar=data['voltage_solar'],
+        voltage_teg=data['voltage_teg'],
+        power_solar=data['power_solar'],
+        power_teg=data['power_teg']
+    )
+    db.session.add(new_data)
+    db.session.commit()
+    return jsonify({"status": "success"}), 200
+
 @app.route('/data')
 def data():
     latest_data = SensorData.query.order_by(SensorData.timestamp.desc()).first()
     if latest_data:
         print("Latest data:", latest_data)  # Debugging
-        return jsonify({
-            'temperature_front': latest_data.temperature_front,
-            'temperature_back': latest_data.temperature_back,
-            'current_teg': latest_data.current_teg,
-            'current_solar': latest_data.current_solar,
-            'voltage_solar': latest_data.voltage_solar,
-            'voltage_teg': latest_data.voltage_teg,
-            'power_solar': latest_data.power_solar,
-            'power_teg': latest_data.power_teg
-        })
+        return jsonify(latest_data.to_dict())
     else:
         return jsonify({})
 
 @app.route('/data_page')
 def data_page():
     data = SensorData.query.order_by(SensorData.timestamp.desc()).limit(50).all()
-    data_list = [
-        {
-            'temperature_front': entry.temperature_front,
-            'temperature_back': entry.temperature_back,
-            'current_teg': entry.current_teg,
-            'current_solar': entry.current_solar,
-            'voltage_solar': entry.voltage_solar,
-            'voltage_teg': entry.voltage_teg,
-            'power_solar': entry.power_solar,
-            'power_teg': entry.power_teg
-        }
-        for entry in data
-    ]
+    data_list = [entry.to_dict() for entry in data]
     return render_template('Data.html', data=data_list)
 
 @app.route('/data_page_data')
 def data_page_data():
     data = SensorData.query.order_by(SensorData.timestamp.desc()).limit(50).all()
-    data_list = [
-        {
-            'temperature_front': entry.temperature_front,
-            'temperature_back': entry.temperature_back,
-            'current_teg': entry.current_teg,
-            'current_solar': entry.current_solar,
-            'voltage_solar': entry.voltage_solar,
-            'voltage_teg': entry.voltage_teg,
-            'power_solar': entry.power_solar,
-            'power_teg': entry.power_teg
-        }
-        for entry in data
-    ]
+    data_list = [entry.to_dict() for entry in data]
     return jsonify(data_list)
 
 @app.route('/')
 def index():
-    temperature_front = round(random.uniform(20, 30), 2)
-    temperature_back = round(random.uniform(20, 30), 2)
-    current_teg = round(random.uniform(0, 2), 2)
-    current_solar = round(random.uniform(0, 5), 2)
-    voltage_solar = round(random.uniform(0, 12), 2)
-    voltage_teg = round(random.uniform(0, 5), 2)
-    power_solar = voltage_solar * current_solar
-    power_teg = voltage_teg * current_teg
+    latest_data = SensorData.query.order_by(SensorData.timestamp.desc()).first()
+    if latest_data:
+        return render_template('index.html',
+                           temperature_front=latest_data.temperature_front,
+                           temperature_back=latest_data.temperature_back,
+                           current_teg=latest_data.current_teg,
+                           current_solar=latest_data.current_solar,
+                           voltage_solar=latest_data.voltage_solar,
+                           voltage_teg=latest_data.voltage_teg,
+                           power_solar=latest_data.power_solar,
+                           power_teg=latest_data.power_teg)
+    else:
+        return render_template('index.html',
+                           temperature_front=0,
+                           temperature_back=0,
+                           current_teg=0,
+                           current_solar=0,
+                           voltage_solar=0,
+                           voltage_teg=0,
+                           power_solar=0,
+                           power_teg=0)
 
-    new_data = SensorData(
-        temperature_front=temperature_front,
-        temperature_back=temperature_back,
-        current_teg=current_teg,
-        current_solar=current_solar,
-        voltage_solar=voltage_solar,
-        voltage_teg=voltage_teg,
-        power_solar=power_solar,
-        power_teg=power_teg
-    )
-    db.session.add(new_data)
-    db.session.commit()
-
-    return render_template('index.html',
-                           temperature_front=temperature_front,
-                           temperature_back=temperature_back,
-                           current_teg=current_teg,
-                           current_solar=current_solar,
-                           voltage_solar=voltage_solar,
-                           voltage_teg=voltage_teg,
-                           power_solar=power_solar,
-                           power_teg=power_teg)
 @app.route('/graphs')
 def graphs():
     return render_template('graphs.html')
@@ -105,20 +80,8 @@ def graphs():
 @app.route('/graph_data')
 def graph_data():
     data = SensorData.query.order_by(SensorData.timestamp).all()
-    data_list = [
-        {
-            'temperature_front': entry.temperature_front,
-            'temperature_back': entry.temperature_back,
-            'current_teg': entry.current_teg,
-            'current_solar': entry.current_solar,
-            'voltage_solar': entry.voltage_solar,
-            'voltage_teg': entry.voltage_teg,
-            'power_solar': entry.power_solar,
-            'power_teg': entry.power_teg
-        }
-        for entry in data
-    ]
+    data_list = [entry.to_dict() for entry in data]
     return jsonify(data_list)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
