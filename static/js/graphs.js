@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const yVar = yAxisSelect.value;
 
         if (!currentData.length) {
-            geminiResponse.textContent = "No data available for analysis.";
+            geminiResponse.innerHTML = "<p>No data available for analysis.</p>";
             return;
         }
 
@@ -123,13 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
         - X-axis: ${xVar}
         - Y-axis: ${yVar}
         - Data: ${JSON.stringify(dataForAnalysis, null, 2)}
-
-        Examples of good analysis:
-        1. "The data shows a strong positive correlation between X and Y, indicating that as X increases, Y also increases."
-        2. "There is no clear relationship between X and Y, suggesting that other factors may be influencing the results."
-        3. "The data exhibits a cyclical pattern, which could indicate periodic behavior in the system."
-
-        Based on the data, provide a detailed analysis.
         `;
 
         // Send the prompt to Gemini
@@ -143,10 +136,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const result = await response.json();
-            geminiResponse.textContent = result.response;
+
+            // Format the response using HTML
+            geminiResponse.innerHTML = `
+                <h3>Analysis Results</h3>
+                <p><strong>X-axis:</strong> ${xVar}</p>
+                <p><strong>Y-axis:</strong> ${yVar}</p>
+                <p><strong>Insights:</strong></p>
+                <div style="background-color: #f9f9f9; padding: 10px; border-radius: 5px;">
+                    ${result.response}
+                </div>
+            `;
         } catch (error) {
             console.error('Error analyzing data with Gemini:', error);
-            geminiResponse.textContent = "Failed to analyze data. Please try again.";
+            geminiResponse.innerHTML = "<p>Failed to analyze data. Please try again.</p>";
         }
     });
 });
