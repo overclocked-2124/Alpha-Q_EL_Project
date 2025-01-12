@@ -10,10 +10,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sensor_data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
-genai.configure(api_key="AIzaSyAy2h11mWJ-ew43uVR2SZ3cMyqt8cTgfbs") # add api key here
-model = genai.GenerativeModel("gemini-1.5-flash")
-
-
 with app.app_context():
     db.create_all()
 
