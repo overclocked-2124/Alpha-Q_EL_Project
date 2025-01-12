@@ -22,8 +22,8 @@ Adafruit_INA219 ina219_2(0x44);  // Change address if needed (e.g., 0x41)
 int enabled = 1;
 
 // Replace with your network credentials
-const char* ssid = "gvdinesh_airtel";
-const char* password = "sringeri123";
+const char* ssid = "Shreehari@210";
+const char* password = "Mind@205";
 
 void setup() {
   Serial.begin(115200);
@@ -56,7 +56,7 @@ void setup() {
 void loop() {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
-    http.begin("http://192.168.1.9:5000/receive_data"); // Replace with your server's IP and port
+    http.begin("http://127.0.0.1:5000/receive_data"); // Replace with your server's IP and port
 
     // Read DS18B20 temperatures
     sensors.requestTemperatures();
