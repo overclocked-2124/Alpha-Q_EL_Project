@@ -7,21 +7,27 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'Voltage Solar (V)', key: 'voltage_solar' },
         { name: 'Voltage TEG (V)', key: 'voltage_teg' },
         { name: 'Power Solar (W)', key: 'power_solar' },
-        { name: 'Power TEG (W)', key: 'power_teg' }
+        { name: 'Power TEG (W)', key: 'power_teg' },
+        { name: 'Irradiance Front (W/m²)', key: 'irradience_front' },
+        { name: 'Irradiance Back (W/m²)', key: 'irradience_back' },
+        { name: 'Irradiance on Solar (W/m²)', key: 'irradience_onsolar' }
     ];
 
     // Populate select elements
     const xAxisSelect = document.getElementById('x-axis');
     const yAxisSelect = document.getElementById('y-axis');
-    variables.forEach(variant => {
-        const xOption = document.createElement('option');
-        xOption.value = variant.key;
-        xOption.textContent = variant.name;
-        xAxisSelect.appendChild(xOption);
 
-        const yOption = document.createElement('option');
-        yOption.value = variant.key;
-        yOption.textContent = variant.name;
+    // Add options to both dropdowns
+    variables.forEach(variant => {
+        const option = document.createElement('option');
+        option.value = variant.key;
+        option.textContent = variant.name;
+
+        // Clone the option for the Y-axis dropdown
+        const yOption = option.cloneNode(true);
+
+        // Append to both dropdowns
+        xAxisSelect.appendChild(option);
         yAxisSelect.appendChild(yOption);
     });
 

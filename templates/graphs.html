@@ -19,26 +19,12 @@
     <div>
         <label for="x-axis">X-axis:</label>
         <select id="x-axis">
-            <option value="temperature_front">Temperature Front (°C)</option>
-            <option value="temperature_back">Temperature Back (°C)</option>
-            <option value="current_teg">Current TEG (A)</option>
-            <option value="current_solar">Current Solar (A)</option>
-            <option value="voltage_solar">Voltage Solar (V)</option>
-            <option value="voltage_teg">Voltage TEG (V)</option>
-            <option value="power_solar">Power Solar (W)</option>
-            <option value="power_teg">Power TEG (W)</option>
+            <!-- Options will be populated by JavaScript -->
         </select>
 
         <label for="y-axis">Y-axis:</label>
         <select id="y-axis">
-            <option value="temperature_front">Temperature Front (°C)</option>
-            <option value="temperature_back">Temperature Back (°C)</option>
-            <option value="current_teg">Current TEG (A)</option>
-            <option value="current_solar">Current Solar (A)</option>
-            <option value="voltage_solar">Voltage Solar (V)</option>
-            <option value="voltage_teg">Voltage TEG (V)</option>
-            <option value="power_solar">Power Solar (W)</option>
-            <option value="power_teg">Power TEG (W)</option>
+            <!-- Options will be populated by JavaScript -->
         </select>
     </div>
 
@@ -48,12 +34,12 @@
 
     <!-- Gemini AI Analysis Section -->
     <div class="gemini-analysis">
-    <h2>AI Analysis</h2>
-    <button id="analyzeButton">Analyze Data with Gemini</button>
-    <div id="geminiResponse" class="response-box">
-        <!-- Gemini's response will be displayed here -->
+        <h2>AI Analysis</h2>
+        <button id="analyzeButton">Analyze Data with Gemini</button>
+        <div id="geminiResponse" class="response-box">
+            <!-- Gemini's response will be displayed here -->
+        </div>
     </div>
-</div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='js/graphs.js') }}"></script>
