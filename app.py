@@ -3,19 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 from models import db, SensorData
 from datetime import datetime
 import pandas as pd
-import google.generativeai as genai
+from gemini_module import analyze_data  # Import the analyze_data function
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sensor_data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
-
-genai.configure(api_key="AIzaSyAy2h11mWJ-ew43uVR2SZ3cMyqt8cTgfbs") # add api key here
-model = genai.GenerativeModel("gemini-1.5-flash")
-
-
-with app.app_context():
-    db.create_all()
 
 # Read CSV data
 df = pd.read_csv('solar_teg_dataset.csv')
@@ -100,6 +93,17 @@ def csv_data():
     # Convert DataFrame to list of dictionaries
     data = df.to_dict(orient='records')
     return jsonify(data)
+
+@app.route('/analyze_with_gemini', methods=['POST'])
+def analyze_with_gemini():
+    prompt = request.json.get('prompt', '')
+    if not prompt:
+        return jsonify({'response': 'No prompt provided.'}), 400
+    try:
+        analysis = analyze_data(prompt)
+        return jsonify({'response': analysis})
+    except Exception as e:
+        return jsonify({'response': f'Error: {str(e)}'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
