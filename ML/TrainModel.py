@@ -9,9 +9,9 @@ print("Model loaded successfully.")
 print(f"Model type: {type(model)}")  # Should print <class 'sklearn.ensemble._forest.RandomForestClassifier'>
 
 # Example input data
-example_data = [[50, 1000, 19.881, 6.0653, 15.736]]
+example_data = [[50, 1000,50000, 19.881, 6.0653, 15.736]]
 example_df = pd.DataFrame(example_data, columns=[
-    'Temperature_C', 'Irradiance_W_m2', 'Solar_Efficiency', 'TEG_Efficiency', 'Net_Efficiency'
+    'Temperature_C', 'Irradiance_W_m2','Temp_Irrad_Product', 'Solar_Efficiency', 'TEG_Efficiency', 'Net_Efficiency'
 ])
 
 # Make a prediction
