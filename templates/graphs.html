@@ -12,6 +12,7 @@
             <a href="/">Home</a>
             <a href="/data_page">Data</a>
             <a href="/graphs">Graphs</a>
+            <a href="/simulation_analysis">Simulation Analysis</a>
         </div>
     </nav>
 
@@ -43,6 +44,15 @@
 
     <div class="line-chart">
         <canvas id="scatterChart"></canvas>
+    </div>
+
+    <!-- Gemini AI Analysis Section -->
+    <div class="gemini-analysis">
+        <h2>AI Analysis</h2>
+        <button id="analyzeButton">Analyze Data with Gemini</button>
+        <div id="geminiResponse" class="response-box">
+            <!-- Gemini's response will be displayed here -->
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

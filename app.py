@@ -2,14 +2,23 @@ from flask import Flask, render_template, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from models import db, SensorData
 from datetime import datetime
+import pandas as pd
+import google.generativeai as genai
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sensor_data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
+genai.configure(api_key="AIzaSyAy2h11mWJ-ew43uVR2SZ3cMyqt8cTgfbs") # add api key here
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+
 with app.app_context():
     db.create_all()
+
+# Read CSV data
+df = pd.read_csv('solar_teg_dataset.csv')
 
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
@@ -32,7 +41,6 @@ def receive_data():
 def data():
     latest_data = SensorData.query.order_by(SensorData.timestamp.desc()).first()
     if latest_data:
-        print("Latest data:", latest_data)  # Debugging
         return jsonify(latest_data.to_dict())
     else:
         return jsonify({})
@@ -82,6 +90,16 @@ def graph_data():
     data = SensorData.query.order_by(SensorData.timestamp).all()
     data_list = [entry.to_dict() for entry in data]
     return jsonify(data_list)
+
+@app.route('/simulation_analysis')
+def simulation_analysis():
+    return render_template('simulation_analysis.html')
+
+@app.route('/csv_data')
+def csv_data():
+    # Convert DataFrame to list of dictionaries
+    data = df.to_dict(orient='records')
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

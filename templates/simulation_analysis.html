@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulation Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="logo">Sensor Dashboard</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/data_page">Data</a>
+            <a href="/graphs">Graphs</a>
+            <a href="/simulation_analysis">Simulation Analysis</a>
+        </div>
+    </nav>
+
+    <div>
+        <h2>Simulation Analysis</h2>
+        <label for="x-axis">X-axis:</label>
+        <select id="x-axis">
+            <!-- Options will be populated by JavaScript -->
+        </select>
+
+        <label for="y-axis">Y-axis:</label>
+        <select id="y-axis">
+            <!-- Options will be populated by JavaScript -->
+        </select>
+    </div>
+
+    <div class="line-chart">
+        <canvas id="scatterChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/simulation_analysis.js') }}"></script>
+</body>
+</html>
