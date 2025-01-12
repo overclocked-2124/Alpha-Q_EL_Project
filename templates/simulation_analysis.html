@@ -33,6 +33,15 @@
         <canvas id="scatterChart"></canvas>
     </div>
 
+    <!-- Gemini AI Analysis Section -->
+    <div class="gemini-analysis">
+        <h2>AI Analysis</h2>
+        <button id="analyzeButton">Analyze Data with Gemini</button>
+        <div id="geminiResponse" class="response-box">
+            <!-- Gemini's response will be displayed here -->
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='js/simulation_analysis.js') }}"></script>
 </body>

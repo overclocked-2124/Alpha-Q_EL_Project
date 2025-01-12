@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Declare scatterChart variable
     let scatterChart;
+    let currentData = []; // Store the current data for analysis
 
     // Function to fetch data
     function fetchData(xVar, yVar) {
@@ -39,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 );
                 const xData = filteredData.map(entry => entry[xVar]);
                 const yData = filteredData.map(entry => entry[yVar]);
+                currentData = filteredData.slice(-20); // Store the last 20 data points
                 updateChart(xData, yData, xVar, yVar);
             })
             .catch(error => console.error('Error fetching data:', error));
@@ -96,4 +98,59 @@ document.addEventListener('DOMContentLoaded', () => {
     const defaultXVar = variables[0].key;
     const defaultYVar = variables[1].key;
     fetchData(defaultXVar, defaultYVar);
+
+    // Gemini AI Analysis
+    const analyzeButton = document.getElementById('analyzeButton');
+    const geminiResponse = document.getElementById('geminiResponse');
+
+    analyzeButton.addEventListener('click', async () => {
+        const xVar = xAxisSelect.value;
+        const yVar = yAxisSelect.value;
+
+        if (!currentData.length) {
+            geminiResponse.innerHTML = "<p>No data available for analysis.</p>";
+            return;
+        }
+
+        // Prepare the data for Gemini
+        const dataForAnalysis = currentData.map(entry => ({
+            [xVar]: entry[xVar],
+            [yVar]: entry[yVar]
+        }));
+
+        // Prepare the prompt for Gemini
+        const prompt = `
+        Analyze the following data and provide insights:
+        - X-axis: ${xVar}
+        - Y-axis: ${yVar}
+        - Data: ${JSON.stringify(dataForAnalysis, null, 2)}
+        `;
+
+        // Send the prompt to Gemini
+        try {
+            const response = await fetch('/analyze_with_gemini', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt }),
+            });
+
+            const result = await response.json();
+
+            // Format the response using HTML
+            geminiResponse.innerHTML = `
+                <h3>Analysis Results</h3>
+                <p><strong>X-axis:</strong> ${xVar}</p>
+                <p><strong>Y-axis:</strong> ${yVar}</p>
+                <p><strong>Insights:</strong></p>
+                <div style="background-color: #f9f9f9; padding: 10px; border-radius: 5px;">
+                    ${result.response}
+                </div>
+            `;
+        } catch (error) {
+            console.error('Error analyzing data with Gemini:', error);
+            geminiResponse.innerHTML = "<p>Failed to analyze data. Please try again.</p>";
+        }
+    });
 });
