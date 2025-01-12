@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Data Table</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Refresh the page every 1 second -->
     <meta http-equiv="refresh" content="1">
 </head>
 <body>
@@ -17,21 +18,7 @@
         </div>
     </nav>
 
-    <div class="checkbox-filter">
-        <h3>Toggle Columns:</h3>
-        <label><input type="checkbox" id="check-temperature-front" checked> Temperature Front (°C)</label><br>
-        <label><input type="checkbox" id="check-temperature-back" checked> Temperature Back (°C)</label><br>
-        <label><input type="checkbox" id="check-current-teg" checked> Current TEG (A)</label><br>
-        <label><input type="checkbox" id="check-current-solar" checked> Current Solar (A)</label><br>
-        <label><input type="checkbox" id="check-voltage-solar" checked> Voltage Solar (V)</label><br>
-        <label><input type="checkbox" id="check-voltage-teg" checked> Voltage TEG (V)</label><br>
-        <label><input type="checkbox" id="check-power-solar" checked> Power Solar (W)</label><br>
-        <label><input type="checkbox" id="check-power-teg" checked> Power TEG (W)</label><br>
-        <label><input type="checkbox" id="check-irradience-front" checked> Irradiance Front (W/m²)</label><br>
-        <label><input type="checkbox" id="check-irradience-back" checked> Irradiance Back (W/m²)</label><br>
-        <label><input type="checkbox" id="check-irradience-onsolar" checked> Irradiance on Solar (W/m²)</label><br>
-    </div>
-
+    <!-- Data Table -->
     <table>
         <thead>
             <tr>
@@ -66,33 +53,5 @@
             {% endfor %}
         </tbody>
     </table>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const checkboxes = document.querySelectorAll('input[type=checkbox]');
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', updateTableColumns);
-            });
-
-            function updateTableColumns() {
-                const table = document.querySelector('table');
-                const columns = [
-                    'temperature_front', 'temperature_back', 'current_teg', 'current_solar',
-                    'voltage_solar', 'voltage_teg', 'power_solar', 'power_teg',
-                    'irradience_front', 'irradience_back', 'irradience_onsolar'
-                ];
-
-                columns.forEach((col, index) => {
-                    const checkbox = document.getElementById(`check-${col}`);
-                    const cells = table.querySelectorAll(`td:nth-child(${index + 1}), th:nth-child(${index + 1})`);
-                    if (checkbox.checked) {
-                        cells.forEach(cell => cell.style.display = '');
-                    } else {
-                        cells.forEach(cell => cell.style.display = 'none');
-                    }
-                });
-            }
-        });
-    </script>
 </body>
 </html>
