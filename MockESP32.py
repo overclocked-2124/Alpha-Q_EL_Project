@@ -30,18 +30,9 @@ def send_sensor_data():
         # Generate fake sensor data
         sensor_data = generate_mock_sensor_data()
 
-        # Send the data to the Flask server
-        try:
-            response = requests.post(SERVER_URL, json=sensor_data)
-            if response.status_code == 200:
-                print("Data sent successfully:", sensor_data)
-            else:
-                print(f"Failed to send data. Status code: {response.status_code}")
-        except Exception as e:
-            print(f"Error sending data: {e}")
+        response = requests.post(SERVER_URL, json=sensor_data)
 
-        # Wait for 5 seconds before sending the next data
-        time.sleep(5)
+        
 
 
 if __name__ == "__main__":
