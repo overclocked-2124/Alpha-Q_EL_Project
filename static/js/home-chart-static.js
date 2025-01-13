@@ -15,7 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 { label: 'Voltage Solar (V)', data: [], borderColor: 'purple', fill: false },
                 { label: 'Voltage TEG (V)', data: [], borderColor: 'pink', fill: false },
                 { label: 'Power Solar (W)', data: [], borderColor: 'yellow', fill: false },
-                { label: 'Power TEG (W)', data: [], borderColor: 'brown', fill: false }
+                { label: 'Power TEG (W)', data: [], borderColor: 'brown', fill: false },
+                { label: 'Irradiance Front (W/m²)', data: [], borderColor: 'cyan', fill: false },
+                { label: 'Irradiance Back (W/m²)', data: [], borderColor: 'magenta', fill: false },
+                { label: 'Irradiance on Solar (W/m²)', data: [], borderColor: 'lime', fill: false }
             ]
         },
         options: {
@@ -50,6 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
         lineChart.data.datasets[5].data.push(data.voltage_teg);
         lineChart.data.datasets[6].data.push(data.power_solar);
         lineChart.data.datasets[7].data.push(data.power_teg);
+        lineChart.data.datasets[8].data.push(data.irradience_front);
+        lineChart.data.datasets[9].data.push(data.irradience_back);
+        lineChart.data.datasets[10].data.push(data.irradience_onsolar);
 
         // Optional: Limit the number of data points to avoid performance issues
         if (lineChart.data.labels.length > 100) { // Change 100 to any number you prefer

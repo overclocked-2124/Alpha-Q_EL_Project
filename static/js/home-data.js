@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('voltage-teg').textContent = data.voltage_teg.toFixed(2);
         document.getElementById('power-solar').textContent = data.power_solar.toFixed(2);
         document.getElementById('power-teg').textContent = data.power_teg.toFixed(2);
+        document.getElementById('irradience-front').textContent = data.irradience_front.toFixed(2);
+        document.getElementById('irradience-back').textContent = data.irradience_back.toFixed(2);
+        document.getElementById('irradience-onsolar').textContent = data.irradience_onsolar.toFixed(2);
     }
 
     // Function to fetch data and update the card values

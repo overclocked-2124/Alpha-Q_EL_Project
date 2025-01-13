@@ -18,6 +18,7 @@
         </div>
     </nav>
 
+    <!-- Data Table -->
     <table>
         <thead>
             <tr>
@@ -29,6 +30,9 @@
                 <th>Voltage TEG (V)</th>
                 <th>Power Solar (W)</th>
                 <th>Power TEG (W)</th>
+                <th>Irradiance Front (W/m²)</th>
+                <th>Irradiance Back (W/m²)</th>
+                <th>Irradiance on Solar (W/m²)</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +46,9 @@
                 <td>{{ entry.voltage_teg }}</td>
                 <td>{{ entry.power_solar }}</td>
                 <td>{{ entry.power_teg }}</td>
+                <td>{{ entry.irradience_front }}</td>
+                <td>{{ entry.irradience_back }}</td>
+                <td>{{ entry.irradience_onsolar }}</td>
             </tr>
             {% endfor %}
         </tbody>

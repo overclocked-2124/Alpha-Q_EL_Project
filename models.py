@@ -13,6 +13,9 @@ class SensorData(db.Model):
     voltage_teg = db.Column(db.Float)
     power_solar = db.Column(db.Float)
     power_teg = db.Column(db.Float)
+    irradience_front = db.Column(db.Float)
+    irradience_back = db.Column(db.Float)
+    irradience_onsolar = db.Column(db.Float)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     def to_dict(self):
@@ -26,5 +29,8 @@ class SensorData(db.Model):
             'voltage_teg': self.voltage_teg,
             'power_solar': self.power_solar,
             'power_teg': self.power_teg,
-            'timestamp': self.timestamp.isoformat()  # Convert datetime to string
+            'irradience_front': self.irradience_front,
+            'irradience_back': self.irradience_back,
+            'irradience_onsolar': self.irradience_onsolar,
+            'timestamp': self.timestamp.isoformat()
         }

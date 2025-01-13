@@ -20,14 +20,17 @@ df = pd.read_csv('solar_teg_dataset.csv')
 def receive_data():
     data = request.json
     new_data = SensorData(
-        temperature_front=data['temperature_front'],
-        temperature_back=data['temperature_back'],
-        current_teg=data['current_teg'],
-        current_solar=data['current_solar'],
-        voltage_solar=data['voltage_solar'],
-        voltage_teg=data['voltage_teg'],
-        power_solar=data['power_solar'],
-        power_teg=data['power_teg']
+        temperature_front=data.get('temperature_front', 0.0),
+        temperature_back=data.get('temperature_back', 0.0),
+        current_teg=data.get('current_teg', 0.0),
+        current_solar=data.get('current_solar', 0.0),
+        voltage_solar=data.get('voltage_solar', 0.0),
+        voltage_teg=data.get('voltage_teg', 0.0),
+        power_solar=data.get('power_solar', 0.0),
+        power_teg=data.get('power_teg', 0.0),
+        irradience_front=data.get('irradience_front', 0.0),
+        irradience_back=data.get('irradience_back', 0.0),
+        irradience_onsolar=data.get('irradience_onsolar', 0.0)
     )
     db.session.add(new_data)
     db.session.commit()
@@ -58,24 +61,30 @@ def index():
     latest_data = SensorData.query.order_by(SensorData.timestamp.desc()).first()
     if latest_data:
         return render_template('index.html',
-                           temperature_front=latest_data.temperature_front,
-                           temperature_back=latest_data.temperature_back,
-                           current_teg=latest_data.current_teg,
-                           current_solar=latest_data.current_solar,
-                           voltage_solar=latest_data.voltage_solar,
-                           voltage_teg=latest_data.voltage_teg,
-                           power_solar=latest_data.power_solar,
-                           power_teg=latest_data.power_teg)
+                               temperature_front=latest_data.temperature_front,
+                               temperature_back=latest_data.temperature_back,
+                               current_teg=latest_data.current_teg,
+                               current_solar=latest_data.current_solar,
+                               voltage_solar=latest_data.voltage_solar,
+                               voltage_teg=latest_data.voltage_teg,
+                               power_solar=latest_data.power_solar,
+                               power_teg=latest_data.power_teg,
+                               irradience_front=latest_data.irradience_front,
+                               irradience_back=latest_data.irradience_back,
+                               irradience_onsolar=latest_data.irradience_onsolar)
     else:
         return render_template('index.html',
-                           temperature_front=0,
-                           temperature_back=0,
-                           current_teg=0,
-                           current_solar=0,
-                           voltage_solar=0,
-                           voltage_teg=0,
-                           power_solar=0,
-                           power_teg=0)
+                               temperature_front=0,
+                               temperature_back=0,
+                               current_teg=0,
+                               current_solar=0,
+                               voltage_solar=0,
+                               voltage_teg=0,
+                               power_solar=0,
+                               power_teg=0,
+                               irradience_front=0,
+                               irradience_back=0,
+                               irradience_onsolar=0)
 
 @app.route('/graphs')
 def graphs():
@@ -93,7 +102,6 @@ def simulation_analysis():
 
 @app.route('/csv_data')
 def csv_data():
-    # Convert DataFrame to list of dictionaries
     data = df.to_dict(orient='records')
     return jsonify(data)
 
