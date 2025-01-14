@@ -22,8 +22,8 @@ Adafruit_INA219 ina219_2(0x44);  // Change address if needed (e.g., 0x41)
 int enabled = 1;
 
 // Replace with your network credentials
-const char* ssid = "gvdinesh_airtel";
-const char* password = "sringeri123";
+const char* ssid = "";
+const char* password = "";
 
 void setup() {
   Serial.begin(115200);
