@@ -3,7 +3,7 @@ import google.generativeai as genai
 
 def analyze_data(prompt):
     # Configure the API key
-    genai.configure(api_key="AIzaSyAy2h11mWJ-ew43uVR2SZ3cMyqt8cTgfbs")  # Replace with your actual API key
+    genai.configure(api_key="")  # Replace with your actual API key
 
     # Initialize the GenerativeModel
     model = genai.GenerativeModel("gemini-1.5-flash")
